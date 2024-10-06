@@ -1,59 +1,57 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faLock, faUser, faMapMarkerAlt, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faMapMarkerAlt, faPhone, faLock, faGlobe, faGavel } from '@fortawesome/free-solid-svg-icons';
+import LawyersList from './LawyersList'; // Import LawyersList
 import './styles.css'; // Import your CSS styles
 
 const LawFirmSignUp = () => {
     const [showLawFirmRegistration, setShowLawFirmRegistration] = useState(false);
     const [showInviteForm, setShowInviteForm] = useState(false);
-    const [showOAuthSection, setShowOAuthSection] = useState(false); // Define OAuth section state
+    const [showOAuthSection, setShowOAuthSection] = useState(false);
+    const [showLawyerProfiles, setShowLawyerProfiles] = useState(false);
 
     const [formData, setFormData] = useState({
         firmName: '',
-        streetAddress: '',
-        city: '',
-        state: '',
-        zip: '',
+        firmAddress: '',
+        firmPhone: '',
         adminName: '',
         adminEmail: '',
-        phoneNumber: '',
         password: '',
         confirmPassword: '',
-        practiceAreas: '',
-        websiteUrl: '',
-        consent: false,
+        practiceAreas: '', // New practice area field
+        websiteUrl: '', // New website URL field
+        consent: false, // New checkbox field
         lawyerEmail: '',
         lawyerRole: '',
     });
 
-    const handleChange = (e) => {
+    // Handle input changes
+    const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: type === 'checkbox' ? checked : value
-        }));
+        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
     };
 
+    // Handle law firm registration form submission
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Law Firm Registration Data:', formData);
-        // Handle law firm registration submission logic here
+        // You can make an API call or handle registration here
     };
 
+    // Handle invite form submission
     const handleInviteSubmit = (e) => {
         e.preventDefault();
         console.log('Invite Data:', {
             lawyerEmail: formData.lawyerEmail,
             lawyerRole: formData.lawyerRole,
         });
-        // Handle invite submission logic here
+        // You can make an API call or handle invite sending here
     };
 
     return (
         <div className="wrapper">
             <div className="container">
-                {/* Button Group: Law Firm Registration, Admin Section, and OAuth */}
-                {!showLawFirmRegistration && !showInviteForm && !showOAuthSection && (
+                {!showLawFirmRegistration && !showInviteForm && !showOAuthSection && !showLawyerProfiles && (
                     <div className="button-group">
                         <button 
                             type="button" 
@@ -61,34 +59,47 @@ const LawFirmSignUp = () => {
                                 setShowLawFirmRegistration(true);
                                 setShowInviteForm(false);
                                 setShowOAuthSection(false);
+                                setShowLawyerProfiles(false);
                             }}
                             className="btn-primary"
                         >
                             Law Firm Registration
                         </button>
-
                         <button 
                             type="button" 
                             onClick={() => {
                                 setShowInviteForm(true);
                                 setShowLawFirmRegistration(false);
                                 setShowOAuthSection(false);
+                                setShowLawyerProfiles(false);
                             }}
                             className="btn-primary"
                         >
                             Admin Section
                         </button>
-
                         <button 
                             type="button" 
                             onClick={() => {
                                 setShowOAuthSection(true);
                                 setShowLawFirmRegistration(false);
                                 setShowInviteForm(false);
+                                setShowLawyerProfiles(false);
                             }}
                             className="btn-primary"
                         >
                             OAuth Section
+                        </button>
+                        <button 
+                            type="button" 
+                            onClick={() => {
+                                setShowLawyerProfiles(true);
+                                setShowLawFirmRegistration(false);
+                                setShowInviteForm(false);
+                                setShowOAuthSection(false);
+                            }}
+                            className="btn-primary"
+                        >
+                            Lawyer Profiles
                         </button>
                     </div>
                 )}
@@ -97,7 +108,6 @@ const LawFirmSignUp = () => {
                 {showOAuthSection && (
                     <div className="oauth-section">
                         <h2>OAuth Login</h2>
-                        <p>Here you can add OAuth providers (Google, LinkedIn, etc.)</p>
                         <button type="button" onClick={() => setShowOAuthSection(false)}>Go Back</button>
                     </div>
                 )}
@@ -108,180 +118,124 @@ const LawFirmSignUp = () => {
                         <h2>Law Firm Registration</h2>
                         <form onSubmit={handleSubmit} className="signup-form">
                             <div className="form-group">
-                                <label htmlFor="firmName">Law Firm Name</label>
+                                <label htmlFor="firmName">Firm Name:</label>
                                 <div className="input-group">
                                     <FontAwesomeIcon icon={faUser} className="input-icon" />
                                     <input
                                         type="text"
-                                        id="firmName"
                                         name="firmName"
                                         value={formData.firmName}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter law firm name"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="streetAddress">Firm Address</label>
+                                <label htmlFor="firmAddress">Firm Address:</label>
                                 <div className="input-group">
                                     <FontAwesomeIcon icon={faMapMarkerAlt} className="input-icon" />
                                     <input
                                         type="text"
-                                        id="streetAddress"
-                                        name="streetAddress"
-                                        placeholder="Street Address"
-                                        value={formData.streetAddress}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="input-group">
-                                    <input
-                                        type="text"
-                                        id="city"
-                                        name="city"
-                                        placeholder="City"
-                                        value={formData.city}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="input-group">
-                                    <input
-                                        type="text"
-                                        id="state"
-                                        name="state"
-                                        placeholder="State/Province"
-                                        value={formData.state}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="input-group">
-                                    <input
-                                        type="text"
-                                        id="zip"
-                                        name="zip"
-                                        placeholder="ZIP/Postal Code"
-                                        value={formData.zip}
-                                        onChange={handleChange}
+                                        name="firmAddress"
+                                        value={formData.firmAddress}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter law firm address"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="adminName">Admin Name</label>
-                                <div className="input-group">
-                                    <FontAwesomeIcon icon={faUser} className="input-icon" />
-                                    <input
-                                        type="text"
-                                        id="adminName"
-                                        name="adminName"
-                                        value={formData.adminName}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="adminEmail">Admin Email</label>
-                                <div className="input-group">
-                                    <FontAwesomeIcon icon={faEnvelope} className="input-icon" />
-                                    <input
-                                        type="email"
-                                        id="adminEmail"
-                                        name="adminEmail"
-                                        value={formData.adminEmail}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="phoneNumber">Phone Number</label>
+                                <label htmlFor="firmPhone">Phone no:</label>
                                 <div className="input-group">
                                     <FontAwesomeIcon icon={faPhone} className="input-icon" />
                                     <input
                                         type="text"
-                                        id="phoneNumber"
-                                        name="phoneNumber"
-                                        value={formData.phoneNumber}
-                                        onChange={handleChange}
+                                        name="firmPhone"
+                                        value={formData.firmPhone}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter law firm phone number"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="password">Password</label>
+                                <label htmlFor="password">Password:</label>
                                 <div className="input-group">
                                     <FontAwesomeIcon icon={faLock} className="input-icon" />
                                     <input
                                         type="password"
-                                        id="password"
                                         name="password"
                                         value={formData.password}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter password"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="confirmPassword">Confirm Password</label>
+                                <label htmlFor="confirmPassword">Confirm Password:</label>
                                 <div className="input-group">
                                     <FontAwesomeIcon icon={faLock} className="input-icon" />
                                     <input
                                         type="password"
-                                        id="confirmPassword"
                                         name="confirmPassword"
                                         value={formData.confirmPassword}
-                                        onChange={handleChange}
+                                        onChange={handleInputChange}
+                                        placeholder="Confirm password"
                                         required
                                     />
                                 </div>
                             </div>
 
+                            {/* New Practice Areas Field */}
                             <div className="form-group">
-                                <label htmlFor="practiceAreas">Practice Areas</label>
-                                <input
-                                    type="text"
-                                    id="practiceAreas"
-                                    name="practiceAreas"
-                                    placeholder="e.g., Family Law, Criminal Law"
-                                    value={formData.practiceAreas}
-                                    onChange={handleChange}
-                                />
+                                <label htmlFor="practiceAreas">Practice Areas:</label>
+                                <div className="input-group">
+                                    <FontAwesomeIcon icon={faGavel} className="input-icon" />
+                                    <input
+                                        type="text"
+                                        name="practiceAreas"
+                                        value={formData.practiceAreas}
+                                        onChange={handleInputChange}
+                                        placeholder="e.g., Family Law, Criminal Law"
+                                    />
+                                </div>
                             </div>
 
+                            {/* New Website URL Field */}
                             <div className="form-group">
-                                <label htmlFor="websiteUrl">Website URL (Optional)</label>
-                                <input
-                                    type="url"
-                                    id="websiteUrl"
-                                    name="websiteUrl"
-                                    value={formData.websiteUrl}
-                                    onChange={handleChange}
-                                />
+                                <label htmlFor="websiteUrl">Website URL (Optional):</label>
+                                <div className="input-group">
+                                    <FontAwesomeIcon icon={faGlobe} className="input-icon" />
+                                    <input
+                                        type="url"
+                                        name="websiteUrl"
+                                        value={formData.websiteUrl}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter your firm's website URL"
+                                    />
+                                </div>
                             </div>
 
-                            <div className="form-group">
+                            {/* New Terms & Conditions Checkbox */}
+                            <div className="form-group checkbox-group">
                                 <input
                                     type="checkbox"
-                                    id="consent"
                                     name="consent"
                                     checked={formData.consent}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     required
                                 />
                                 <label htmlFor="consent">I agree to the terms and conditions</label>
                             </div>
 
                             <button type="submit" className="signup-button">Register</button>
+                            <button type="button" onClick={() => setShowLawFirmRegistration(false)}>Go Back</button>
                         </form>
                     </div>
                 )}
@@ -292,32 +246,39 @@ const LawFirmSignUp = () => {
                         <h2>Design Invite</h2>
                         <form onSubmit={handleInviteSubmit} className="invite-form-content">
                             <div className="form-group">
-                                <label htmlFor="lawyerEmail">Lawyer's Email</label>
+                                <label>Lawyer Email:</label>
                                 <input
                                     type="email"
-                                    id="lawyerEmail"
                                     name="lawyerEmail"
                                     value={formData.lawyerEmail}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter lawyer's email"
                                     required
                                 />
                             </div>
-
                             <div className="form-group">
-                                <label htmlFor="lawyerRole">Lawyer's Role</label>
+                                <label>Lawyer Role:</label>
                                 <input
                                     type="text"
-                                    id="lawyerRole"
                                     name="lawyerRole"
                                     value={formData.lawyerRole}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter lawyer's role"
                                     required
                                 />
                             </div>
-
                             <button type="submit" className="invite-button">Send Invite</button>
                             <button type="button" onClick={() => setShowInviteForm(false)}>Go Back</button>
                         </form>
+                    </div>
+                )}
+
+                {/* Lawyer Profiles Section */}
+                {showLawyerProfiles && (
+                    <div className="lawyer-profiles">
+                        <h2>Registered Lawyers</h2>
+                        <LawyersList /> {/* Render the LawyersList component here */}
+                        <button type="button" onClick={() => setShowLawyerProfiles(false)}>Go Back</button>
                     </div>
                 )}
             </div>
@@ -327,3 +288,5 @@ const LawFirmSignUp = () => {
 
 export default LawFirmSignUp;
 
+               
+                                  
