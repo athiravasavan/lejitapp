@@ -1,0 +1,50 @@
+.welcome-container {
+    text-align: center;
+    margin: 50px auto;
+    max-width: 600px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Align buttons horizontally */
+    gap: 20px; /* Space between buttons */
+    margin: 20px 0;
+}
+
+.portal-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between the icon and text */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px; /* Width of buttons */
+}
+
+.portal-button:hover {
+    background-color: #45a049;
+}
+
+.login-actions {
+    margin-top: 20px;
+}
+
+.login-button {
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.login-button:hover {
+    background-color: #007bb5;
+}

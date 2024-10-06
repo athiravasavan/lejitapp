@@ -1,0 +1,36 @@
+.otp-container {
+    width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.input-error {
+    border: 1px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.otp-submit-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.otp-submit-button:hover {
+    background-color: #45a049;
+}
